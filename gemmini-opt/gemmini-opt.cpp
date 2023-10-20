@@ -19,15 +19,18 @@
 #include "llvm/Support/SourceMgr.h"
 #include "llvm/Support/ToolOutputFile.h"
 
-#include "Standalone/StandaloneDialect.h"
-#include "Standalone/StandaloneOpsDialect.cpp.inc"
+#include "Gemmini/GemminiDialect.h"
+#include "Gemmini/GemminiOpsDialect.cpp.inc"
+
+//#include "Standalone/StandaloneDialect.h"
+//#include "Standalone/StandaloneOpsDialect.cpp.inc"
 
 int main(int argc, char **argv) {
   mlir::registerAllPasses();
   // TODO: Register standalone passes here.
 
   mlir::DialectRegistry registry;
-  registry.insert<mlir::standalone::StandaloneDialect>();
+  registry.insert<mlir::gemmini::GemminiDialect>();
   registry.insert<mlir::func::FuncDialect>();
   registry.insert<mlir::arith::ArithDialect>();
   // Add the following to include *all* MLIR Core dialects, or selectively

@@ -4,9 +4,9 @@ set(LIBS
         ${dialect_libs}
         ${conversion_libs}
         MLIROptLib
-        MLIRStandalone
+        MLIRGemmini
         )
-add_llvm_executable(standalone-opt standalone-opt.cpp)
+add_llvm_executable(gemmini-opt gemmini-opt.cpp)
 
-llvm_update_compile_flags(standalone-opt)
-target_link_libraries(standalone-opt PRIVATE ${LIBS})
+llvm_update_compile_flags(gemmini-opt)
+target_link_libraries(gemmini-opt PRIVATE ${LIBS})

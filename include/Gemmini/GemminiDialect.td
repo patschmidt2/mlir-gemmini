@@ -6,8 +6,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef STANDALONE_DIALECT
-#define STANDALONE_DIALECT
+#ifndef GEMMINI_DIALECT
+#define GEMMINI_DIALECT
 
 include "mlir/IR/OpBase.td"
 
@@ -15,22 +15,20 @@ include "mlir/IR/OpBase.td"
 // Standalone dialect definition.
 //===----------------------------------------------------------------------===//
 
-def Standalone_Dialect : Dialect {
-    let name = "standalone";
-    let summary = "A standalone out-of-tree MLIR dialect.";
+def Gemmini_Dialect : Dialect {
+    let name = "gemmini";
+    let summary = "A gemmini out-of-tree MLIR dialect.";
     let description = [{
-        This dialect is an example of an out-of-tree MLIR dialect designed to
-        illustrate the basic setup required to develop MLIR-based tools without
-        working inside of the LLVM source tree.
+        This is a dialect to import models via mlir-torch and lower them to gemmini operations
     }];
-    let cppNamespace = "::mlir::standalone";
+    let cppNamespace = "::mlir::gemmini";
 }
 
 //===----------------------------------------------------------------------===//
-// Base standalone operation definition.
+// Base gemmini operation definition.
 //===----------------------------------------------------------------------===//
 
-class Standalone_Op<string mnemonic, list<Trait> traits = []> :
-        Op<Standalone_Dialect, mnemonic, traits>;
+class Gemmini_Op<string mnemonic, list<Trait> traits = []> :
+        Op<Gemmini_Dialect, mnemonic, traits>;
 
 #endif // STANDALONE_DIALECT

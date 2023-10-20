@@ -6,19 +6,19 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "Standalone/StandaloneDialect.h"
-#include "Standalone/StandaloneOps.h"
+#include "Gemmini/GemminiDialect.h"
+#include "Gemmini/GemminiOps.h"
 
 using namespace mlir;
-using namespace mlir::standalone;
+using namespace mlir::gemmini;
 
 //===----------------------------------------------------------------------===//
 // Standalone dialect.
 //===----------------------------------------------------------------------===//
 
-void StandaloneDialect::initialize() {
+void GemminiDialect::initialize() {
   addOperations<
 #define GET_OP_LIST
-#include "Standalone/StandaloneOps.cpp.inc"
+#include "Gemmini/GemminiOps.cpp.inc"
       >();
 }
