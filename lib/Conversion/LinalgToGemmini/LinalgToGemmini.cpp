@@ -18,8 +18,12 @@
 #include "mlir/Dialect/MemRef/IR/MemRef.h"
 #include "mlir/Pass/Pass.h"
 #include "mlir/Transforms/DialectConversion.h"
+#include "llvm/ADT/APFloat.h"
+#include "llvm/ADT/APInt.h"
+#include "llvm/ADT/STLExtras.h"
 #include "llvm/ADT/Sequence.h"
 #include "llvm/Support/Casting.h"
+#include <cstdint>
 
 #include "gemmini/Conversion/LinalgToGemmini/LinalgToGemmini.h"
 
@@ -48,22 +52,21 @@ struct ConvertMatmul : public OpConversionPattern<linalg::MatmulOp> {
         auto ins =  op.getInputs();
         auto outs = op.getOutputs();
 
-
         // linalg.matmul calculates A*B = C
         auto matA = ins[0];
         auto matB = ins[1];
         auto matC = outs[0];
 
-        auto matA_type = matA.getType().dyn_cast<MemRefType>();
-        auto matB_type = matB.getType().dyn_cast<MemRefType>();
-        auto matC_type = matC.getType().dyn_cast<MemRefType>();
+        MemRefType matAType = dyn_cast<MemRefType>(matA.getType());
+        MemRefType matBType = dyn_cast<MemRefType>(matB.getType());
+        MemRefType matCType = dyn_cast<MemRefType>(matC.getType());
 
-        auto matA_shape = matA_type.getShape();
-        auto matB_shape = matB_type.getShape();
-        auto matC_shape = matC_type.getShape();
+        auto matAShape = matAType.getShape();
+        auto matBShape = matBType.getShape();
+        auto matCShape = matCType.getShape();
 
         // Create bias
-        MemRefType biasType = MemRefType::get({matC_shape[1]}, rewriter.getI32Type());
+        MemRefType biasType = MemRefType::get({matCShape}, rewriter.getI32Type());
         Value bias = rewriter.create<memref::AllocOp>(loc, biasType);
 
         Type fillOpInType = rewriter.getI32Type();
@@ -71,21 +74,16 @@ struct ConvertMatmul : public OpConversionPattern<linalg::MatmulOp> {
         Value fillOpValue = rewriter.create<arith::ConstantOp>(loc, fillOpInType, fillOpInputAttr);
         rewriter.create<linalg::FillOp>(loc, fillOpValue, bias); //fill bias with zeros
 
-        int dim_I = matA_shape[0];
-        int dim_J = matA_shape[1];
-        int dim_K = matB_shape[1];
-
+        //int dimI = matAShape[0];
+        int dimJ = matAShape[1];
+        int dimK = matBShape[1];
 
         llvm::APFloat scale1((float)1.0);
         llvm::APFloat scale0((float)0.0);
 
-
         rewriter.replaceOpWithNewOp<gemmini::TiledMatmulAuto>(op, 
-                    matC.getType(),
-                    matA, matB, bias,
-                    dim_K, dim_J, dim_J, dim_J,
-                    scale1, scale1, scale1,
-                    0, scale1, scale0);
+                    matA, matB, matC, bias,
+                    dimK, dimJ, dimJ, dimJ);
         
         rewriter.create<memref::DeallocOp>(loc, bias);
 
@@ -95,6 +93,69 @@ struct ConvertMatmul : public OpConversionPattern<linalg::MatmulOp> {
 
 };
     
+
+struct ConvertConv2d : public OpConversionPattern<linalg::Conv2DNhwcHwcfOp>{
+    using OpConversionPattern<linalg::Conv2DNhwcHwcfOp>::OpConversionPattern;
+
+    ConvertConv2d(MLIRContext *context)
+        : OpConversionPattern<linalg::Conv2DNhwcHwcfOp>(context, 1) {}
+
+    LogicalResult
+    matchAndRewrite(linalg::Conv2DNhwcHwcfOp op, OpAdaptor adaptor,
+                ConversionPatternRewriter &rewriter) const final {
+        Location loc = op.getLoc();
+
+        auto ins =  op.getInputs();
+        auto outs = op.getOutputs();
+
+        auto input = ins[0];
+        auto weight = ins[0];
+        auto result = outs[0];
+
+        //MemRefType inputType = dyn_cast<MemRefType>(input.getType());
+        //MemRefType weightType = dyn_cast<MemRefType>(weight.getType());
+        MemRefType resultType = dyn_cast<MemRefType>(result.getType());
+
+        // Check if this op can be converted to Gemmini
+        if(!llvm::all_equal(op.getStrides())){
+            return failure();
+        }
+        auto apStride = *(op.getStrides().begin());
+        uint32_t stride = apStride.getZExtValue();
+
+        // Create bias
+        MemRefType biasType = MemRefType::get({resultType.getShape()[3]}, rewriter.getI32Type());
+        Value bias = rewriter.create<memref::AllocOp>(loc, biasType);
+
+        Type fillOpInType = rewriter.getI32Type();
+        TypedAttr fillOpInputAttr = rewriter.getI32IntegerAttr(0);
+        Value fillOpValue = rewriter.create<arith::ConstantOp>(loc, fillOpInType, fillOpInputAttr);
+        rewriter.create<linalg::FillOp>(loc, fillOpValue, bias); //fill bias with zeros
+
+        // Create constants
+        //llvm::APFloat scale1(float(1.0));
+        //uint32_t int1 = 1;
+        //uint32_t int0 = 0;
+
+        rewriter.replaceOpWithNewOp<gemmini::TiledConvAuto>(op,
+                                                            resultType,
+                                                            input, weight, result, bias, 
+                                                            stride
+                                                            );
+        //rewriter.replaceOpWithNewOp<gemmini::TiledConvAuto>(op,
+        //                                                    resultType,
+        //                                                    input, weight, result, bias, 
+        //                                                    stride, 
+        //                                                    int1, int1, int0,
+        //                                                    false, false, false, false, false,
+        //                                                    int0, scale1, 
+        //                                                    int1, int0, int0);
+
+        rewriter.create<memref::DeallocOp>(loc, bias);
+
+        return success();
+    }
+};
 
 //===----------------------------------------------------------------------===//
 // LinalgToGemmini Lowering Pass 

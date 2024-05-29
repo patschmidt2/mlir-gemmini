@@ -4,13 +4,14 @@
 include "mlir/Pass/PassBase.td"
 
 def LinalgToGemmini : Pass<"linalg-to-gemmini"> {
-    let summary = "Lower 'linalgg', operations to gemmini";
+    let summary = "Lower 'linalg' operations to gemmini";
 
     let description = [{
-        "TODO"
+        "Lower individual linalg.matmul and linalg.conv2d operations to the corresponding operation in the Gemmini dialect"
     }];
 
     let dependentDialects = [
+        "mlir::gemmini::GemminiDialect",
         "mlir::func::FuncDialect",
         "mlir::memref::MemRefDialect"
     ];
