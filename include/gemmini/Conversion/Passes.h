@@ -1,7 +1,7 @@
 #ifndef GEMMINI_CONVERSION_PASSES_H_
 #define GEMMINI_CONVERSION_PASSES_H_
 
-#include "gemmini/Conversion/LinalgToGemmini/LinalgToGemmini.h"
+#include "gemmini/Conversion/LinalgToGemmini.h"
 
 namespace mlir {
 namespace gemmini {

@@ -25,7 +25,7 @@
 #include "llvm/Support/Casting.h"
 #include <cstdint>
 
-#include "gemmini/Conversion/LinalgToGemmini/LinalgToGemmini.h"
+#include "gemmini/Conversion/LinalgToGemmini.h"
 
 #include "gemmini/Dialect/GemminiDialect.h"
 #include "gemmini/Dialect/GemminiOps.h"
