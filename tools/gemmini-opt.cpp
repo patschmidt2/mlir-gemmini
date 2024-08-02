@@ -20,7 +20,7 @@
 #include "llvm/Support/ToolOutputFile.h"
 
 #include "gemmini/Dialect/GemminiDialect.h"
-#include "gemmini/Dialect/GemminiOpsDialect.cpp.inc"
+#include "gemmini/Dialect/GemminiDialect.cpp.inc"
 
 #include "gemmini/Conversion/Passes.h"
 

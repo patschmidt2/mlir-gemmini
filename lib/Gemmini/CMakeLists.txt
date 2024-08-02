@@ -6,7 +6,7 @@ add_mlir_dialect_library(MLIRGemmini
         ${PROJECT_SOURCE_DIR}/include/Gemmini
 
         DEPENDS
-        MLIRGemminiOpsIncGen
+        MLIRGemminiIncGen
 
 	LINK_LIBS PUBLIC
 	MLIRIR

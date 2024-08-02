@@ -19,6 +19,6 @@ using namespace mlir::gemmini;
 void GemminiDialect::initialize() {
   addOperations<
 #define GET_OP_LIST
-#include "gemmini/Dialect/GemminiOps.cpp.inc"
+#include "gemmini/Dialect/Gemmini.cpp.inc"
       >();
 }
