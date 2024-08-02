@@ -18,13 +18,13 @@
 #include "llvm/ADT/STLExtras.h"
 #include <cstdint>
 
-#include "gemmini/Conversion/LinalgToGemmini.h"
+#include "Conversion/LinalgToGemmini.h"
 
 #include "gemmini/Dialect/GemminiDialect.h"
 #include "gemmini/Dialect/GemminiOps.h"
 
 #define GEN_PASS_DEF_LINALGTOGEMMINI
-#include "gemmini/Conversion/Passes.h.inc"
+#include "Conversion/Passes.h.inc"
 
 using namespace mlir;
 

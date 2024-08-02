@@ -22,7 +22,7 @@
 #include "gemmini/Dialect/GemminiDialect.h"
 #include "gemmini/Dialect/GemminiDialect.cpp.inc"
 
-#include "gemmini/Conversion/Passes.h"
+#include "Conversion/Passes.h"
 
 int main(int argc, char **argv) {
   // TODO: Register standalone passes here.
