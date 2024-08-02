@@ -16,6 +16,6 @@
 #include "mlir/Interfaces/SideEffectInterfaces.h"
 
 #define GET_OP_CLASSES
-#include "Gemmini/Dialect/Gemmini.h.inc"
+#include "Dialect/Gemmini/Gemmini.h.inc"
 
 #endif // STANDALONE_STANDALONEOPS_H

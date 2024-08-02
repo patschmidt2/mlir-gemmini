@@ -1,4 +1,4 @@
-//===- StandaloneDialect.h - Standalone dialect -----------------*- C++ -*-===//
+//===- StandaloneOps.cpp - Standalone dialect ops ---------------*- C++ -*-===//
 //
 // This file is licensed under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -6,11 +6,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef STANDALONE_STANDALONEDIALECT_H
-#define STANDALONE_STANDALONEDIALECT_H
+#include "Dialect/Gemmini/GemminiOps.h"
+#include "Dialect/Gemmini/GemminiDialect.h"
+#include "mlir/IR/OpImplementation.h"
 
-#include "mlir/IR/Dialect.h"
-
-#include "Gemmini/Dialect/GemminiDialect.h.inc"
-
-#endif // STANDALONE_STANDALONEDIALECT_H
+#define GET_OP_CLASSES
+#include "Dialect/Gemmini/Gemmini.cpp.inc"
