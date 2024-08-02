@@ -6,8 +6,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "gemmini/Dialect/GemminiDialect.h"
-#include "gemmini/Dialect/GemminiOps.h"
+#include "Gemmini/Dialect/GemminiDialect.h"
+#include "Gemmini/Dialect/GemminiOps.h"
 
 using namespace mlir;
 using namespace mlir::gemmini;
@@ -19,6 +19,6 @@ using namespace mlir::gemmini;
 void GemminiDialect::initialize() {
   addOperations<
 #define GET_OP_LIST
-#include "gemmini/Dialect/Gemmini.cpp.inc"
+#include "Gemmini/Dialect/Gemmini.cpp.inc"
       >();
 }

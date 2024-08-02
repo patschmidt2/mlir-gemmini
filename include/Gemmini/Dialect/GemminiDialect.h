@@ -11,6 +11,6 @@
 
 #include "mlir/IR/Dialect.h"
 
-#include "gemmini/Dialect/GemminiDialect.h.inc"
+#include "Gemmini/Dialect/GemminiDialect.h.inc"
 
 #endif // STANDALONE_STANDALONEDIALECT_H

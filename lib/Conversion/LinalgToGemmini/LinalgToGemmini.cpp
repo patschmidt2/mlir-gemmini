@@ -20,8 +20,8 @@
 
 #include "Conversion/LinalgToGemmini.h"
 
-#include "gemmini/Dialect/GemminiDialect.h"
-#include "gemmini/Dialect/GemminiOps.h"
+#include "Gemmini/Dialect/GemminiDialect.h"
+#include "Gemmini/Dialect/GemminiOps.h"
 
 #define GEN_PASS_DEF_LINALGTOGEMMINI
 #include "Conversion/Passes.h.inc"

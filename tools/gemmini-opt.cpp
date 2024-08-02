@@ -19,8 +19,8 @@
 #include "llvm/Support/SourceMgr.h"
 #include "llvm/Support/ToolOutputFile.h"
 
-#include "gemmini/Dialect/GemminiDialect.h"
-#include "gemmini/Dialect/GemminiDialect.cpp.inc"
+#include "Gemmini/Dialect/GemminiDialect.h"
+#include "Gemmini/Dialect/GemminiDialect.cpp.inc"
 
 #include "Conversion/Passes.h"
 

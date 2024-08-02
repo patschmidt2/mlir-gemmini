@@ -1,2 +1,2 @@
-add_subdirectory(gemmini)
+add_subdirectory(Gemmini)
 add_subdirectory(Conversion)
