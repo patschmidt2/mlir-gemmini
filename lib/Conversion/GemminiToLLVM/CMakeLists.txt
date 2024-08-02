@@ -1,8 +1,8 @@
 add_mlir_conversion_library(LinalgToGemmini
-  LinalgToGemmini.cpp
+  GemminiToLLVM.cpp
 
   ADDITIONAL_HEADER_DIRS
-  ${PROJ_INCLUDE_DIR}/gemmini/Conversion
+  ${PROJ_INCLUDE_DIR}/gemmini/Conversion/
 
   DEPENDS
   GemminiConversionPassIncGen
@@ -14,7 +14,6 @@ add_mlir_conversion_library(LinalgToGemmini
   MLIRLinalgDialect
   MLIRMemRefDialect
   MLIRPass
-  MLIRFuncDialect
   MLIRSupport
   MLIRTransforms
   )

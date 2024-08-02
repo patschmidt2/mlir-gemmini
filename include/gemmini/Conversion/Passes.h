@@ -2,6 +2,7 @@
 #define GEMMINI_CONVERSION_PASSES_H_
 
 #include "gemmini/Conversion/LinalgToGemmini.h"
+#include "gemmini/Conversion/GemminiToLLVM.h"
 
 namespace mlir {
 namespace gemmini {

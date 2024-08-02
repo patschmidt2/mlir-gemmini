@@ -9,7 +9,7 @@ namespace gemmini {
 #define GEN_PASS_DECL_LINALGTOGEMMINI
 #include "gemmini/Conversion/Passes.h.inc"
 
-std::unique_ptr<Pass> createLinalgToGemmini();
+std::unique_ptr<mlir::Pass> createLinalgToGemmini();
 
 } //namespace gemmini
 } //namespace mlir
