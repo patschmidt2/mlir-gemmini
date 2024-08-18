@@ -1,3 +1,4 @@
+#include "Dialect/Gemmini/GemminiOps.h"
 #include "mlir/IR/BuiltinAttributes.h"
 #include "mlir/IR/BuiltinDialect.h"
 #include "mlir/IR/BuiltinTypes.h"
@@ -18,18 +19,17 @@
 #include "llvm/ADT/STLExtras.h"
 #include <cstdint>
 
-#include "gemmini/Conversion/LinalgToGemmini.h"
+#include "Conversion/LinalgToGemmini.h"
+#include "Dialect/Gemmini/GemminiDialect.h"
 
-#include "gemmini/Dialect/GemminiDialect.h"
-#include "gemmini/Dialect/GemminiOps.h"
 
-#define GEN_PASS_DEF_LINALGTOGEMMINI
-#include "gemmini/Conversion/Passes.h.inc"
-
-using namespace mlir;
+//using namespace mlir;
 
 namespace mlir{
 namespace gemmini{
+
+#define GEN_PASS_DEF_LINALGTOGEMMINI
+#include "Conversion/Passes.h.inc"
 
 struct ConvertMatmul : public OpConversionPattern<linalg::MatmulOp> {
     using OpConversionPattern<linalg::MatmulOp>::OpConversionPattern;
@@ -154,71 +154,33 @@ struct ConvertConv2d : public OpConversionPattern<linalg::Conv2DNhwcHwcfOp>{
 // LinalgToGemmini Lowering Pass 
 //===----------------------------------------------------------------------===//
 
-struct LinalgToGemmini :  ::impl::LinalgToGemminiBase<LinalgToGemmini> {
+struct LinalgToGemmini :  impl::LinalgToGemminiBase<LinalgToGemmini> {
+    using LinalgToGemminiBase::LinalgToGemminiBase;
+
     void runOnOperation() override {
-    ConversionTarget target(getContext());
+        ConversionTarget target(getContext());
 
-    target.addLegalDialect<BuiltinDialect, 
-                        affine::AffineDialect, 
-                        arith::ArithDialect, 
-                        memref::MemRefDialect, 
-                        linalg::LinalgDialect,
-                        gemmini::GemminiDialect>();
-    target.addIllegalOp<linalg::MatmulOp>();
+        target.addLegalDialect<BuiltinDialect, 
+                            affine::AffineDialect, 
+                            arith::ArithDialect, 
+                            memref::MemRefDialect, 
+                            linalg::LinalgDialect,
+                            gemmini::GemminiDialect>();
+        target.addIllegalOp<linalg::MatmulOp>();
 
-    RewritePatternSet patterns(&getContext());
-    patterns.add<ConvertMatmul>(
-        &getContext());
+        RewritePatternSet patterns(&getContext());
+        patterns.add<ConvertMatmul, ConvertConv2d>( &getContext());
 
 
-    if(failed(
-            applyPartialConversion(getOperation(), target, std::move(patterns)))){
-        signalPassFailure();
-    }
+        if(failed(
+                applyPartialConversion(getOperation(), target, std::move(patterns)))){
+            signalPassFailure();
+        }
     }
 };
 
-std::unique_ptr<Pass> createLinalgToGemmini(){
-    return std::make_unique<LinalgToGemmini>();
-}
-
-/// This is a partial lowering from linalg operations to the gemmini dialect
-//struct LinalgToGemminiLoweringPass : public PassWrapper<LinalgToGemminiLoweringPass, OperationPass<ModuleOp>> {
-//    //MLIR_DEFINE_EXPLICIT_INTERNAL_TYPE_ID(LinalgToGemminiLoweringPass)
-//
-//    void getDependentDialects(DialectRegistry &registry) const override{
-//        registry.insert<func::FuncDialect, memref::MemRefDialect>();
-//    }
-//
-//    void runOnOperation() final;
-//};
-//
-//
-//
-//void LinalgToGemminiLoweringPass::runOnOperation() {
-//    ConversionTarget target(getContext());
-//
-//    target.addLegalDialect<BuiltinDialect, 
-//                        affine::AffineDialect, 
-//                        arith::ArithDialect, 
-//                        memref::MemRefDialect, 
-//                        linalg::LinalgDialect,
-//                        gemmini::GemminiDialect>();
-//    target.addIllegalOp<linalg::MatmulOp>();
-//
-//    RewritePatternSet patterns(&getContext());
-//    patterns.add<ConvertMatmul>(
-//        &getContext());
-//
-//
-//    if(failed(
-//            applyPartialConversion(getOperation(), target, std::move(patterns)))){
-//        signalPassFailure();
-//    }
-//}
-//
-//std::unique_ptr<Pass> createLowerLinalgToGemminiPass(){
-//    return std::make_unique<LinalgToGemminiLoweringPass>();
+//std::unique_ptr<Pass> createLinalgToGemmini(){
+//    return std::make_unique<LinalgToGemmini>();
 //}
 
 } //namespace gemmini

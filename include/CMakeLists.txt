@@ -1,1 +1,2 @@
-add_subdirectory(gemmini)
+add_subdirectory(Dialect)
+add_subdirectory(Conversion)

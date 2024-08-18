@@ -19,10 +19,9 @@
 #include "llvm/Support/SourceMgr.h"
 #include "llvm/Support/ToolOutputFile.h"
 
-#include "gemmini/Dialect/GemminiDialect.h"
-#include "gemmini/Dialect/GemminiDialect.cpp.inc"
+#include "Dialect/Gemmini/GemminiDialect.h"
 
-#include "gemmini/Conversion/Passes.h"
+#include "Conversion/Passes.h"
 
 int main(int argc, char **argv) {
   // TODO: Register standalone passes here.

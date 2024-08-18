@@ -6,9 +6,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "gemmini/Dialect/GemminiOps.h"
-#include "gemmini/Dialect/GemminiDialect.h"
+#include "Dialect/Gemmini/GemminiOps.h"
+#include "Dialect/Gemmini/GemminiDialect.h"
 #include "mlir/IR/OpImplementation.h"
 
 #define GET_OP_CLASSES
-#include "gemmini/Dialect/Gemmini.cpp.inc"
+#include "Dialect/Gemmini/Gemmini.cpp.inc"

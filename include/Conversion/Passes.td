@@ -24,7 +24,7 @@ def GemminiToLLVM : Pass<"gemmini-to-llvm">{
     }];
 
     let dependentDialects = [
-        "mlir::llvm:LLVMDialect",
+        "mlir::LLVM::LLVMDialect",
         "mlir::affine::AffineDialect"
     ];
 }

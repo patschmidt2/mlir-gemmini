@@ -18,12 +18,12 @@
 #include "llvm/ADT/APInt.h"
 #include "llvm/ADT/STLExtras.h"
 
-#include "gemmini/Conversion/GemminiToLLVM.h"
-#include "gemmini/Dialect/GemminiDialect.h"
-#include "gemmini/Dialect/GemminiOps.h"
+#include "Conversion/GemminiToLLVM.h"
+#include "Dialect/Gemmini/GemminiDialect.h"
+#include "Dialect/Gemmini/GemminiOps.h"
 
 #define  GEN_PASS_DEF_GEMMINITOLLVM
-#include "gemmini/Conversion/Passes.h.inc"
+#include "Conversion/Passes.h.inc"
 
 using namespace mlir;
 
