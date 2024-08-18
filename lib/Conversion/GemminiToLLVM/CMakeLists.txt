@@ -11,6 +11,7 @@ add_mlir_conversion_library(LinalgToGemmini
   MLIRAffineDialect
   MLIRAffineToStandard
   MLIRIR
+  MLIRLLVMDialect
   MLIRLinalgDialect
   MLIRMemRefDialect
   MLIRPass

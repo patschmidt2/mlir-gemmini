@@ -9,6 +9,8 @@
 #include "Dialect/Gemmini/GemminiDialect.h"
 #include "Dialect/Gemmini/GemminiOps.h"
 
+#include "Dialect/Gemmini/GemminiDialect.cpp.inc"
+
 using namespace mlir;
 using namespace mlir::gemmini;
 

@@ -20,7 +20,6 @@
 #include "llvm/Support/ToolOutputFile.h"
 
 #include "Dialect/Gemmini/GemminiDialect.h"
-#include "Dialect/Gemmini/GemminiDialect.cpp.inc"
 
 #include "Conversion/Passes.h"
 

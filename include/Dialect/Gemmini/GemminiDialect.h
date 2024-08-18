@@ -9,7 +9,9 @@
 #ifndef STANDALONE_STANDALONEDIALECT_H
 #define STANDALONE_STANDALONEDIALECT_H
 
+#include "mlir/IR/DialectImplementation.h"
 #include "mlir/IR/Dialect.h"
+#include "mlir/IR/BuiltinOps.h"
 
 #include "Dialect/Gemmini/GemminiDialect.h.inc"
 

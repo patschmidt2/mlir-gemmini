@@ -1,6 +1,10 @@
 #ifndef GEMMINI_CONVERSION_PASSES_H_
 #define GEMMINI_CONVERSION_PASSES_H_
 
+#include "mlir/IR/DialectRegistry.h"
+#include "mlir/Pass/Pass.h"
+#include "mlir/Pass/PassRegistry.h"
+
 #include "Conversion/LinalgToGemmini.h"
 #include "Conversion/GemminiToLLVM.h"
 
